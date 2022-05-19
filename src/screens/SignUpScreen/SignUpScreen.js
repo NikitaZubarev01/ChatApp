@@ -62,11 +62,6 @@ const SignUpScreen = () => {
                 text="Register"
                 onPress={onRegisterPressed}
             />
-            <CustomButton
-                text="Forgot password?"
-                onPress={onForgotPasswordPress}
-                type="TERTIARY"
-            />  
              <CustomButton
                 text="Have an account? Sign in"
                 onPress={onSingUpPress}

@@ -6,6 +6,7 @@ import { Text, StyleSheet } from 'react-native';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
+import TabOneScreen from './screens/TabOneScreen';
 
 
 export default function App() {
@@ -16,8 +17,8 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaProvider style={styles}>
-        <Navigation/>
+      <SafeAreaProvider style={styles.root}>
+        <TabOneScreen/>
       </SafeAreaProvider>
     );
   }
