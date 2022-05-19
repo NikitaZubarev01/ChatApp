@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { ColorSchemeName, Pressable, Text } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -18,6 +18,13 @@ import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+
+import SignInScreen from '../src/screens/SignInScreen';
+import SignUpScreen from '../src/screens/SignUpScreen';
+import ComfirmEmailScreen from '../src/screens/ComfirmEmailScreen';
+import ForgotPasswordScreen from '../src/screens/ForgotPasswordScreen';
+import NewPasswordScreen from '../src/screens/NewPasswordScreen';
+import HomeScreen from '../src/screens/HomeScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -37,9 +44,42 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen 
+        name="SignIn" 
+        component={SignInScreen} 
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen 
+        name="SignUp" 
+        component={SignUpScreen} 
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen 
+        name="ComfirmEmail" 
+        component={ComfirmEmailScreen} 
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen 
+        name="ForgotPassword" 
+        component={ForgotPasswordScreen} 
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen 
+        name="NewPassword" 
+        component={NewPasswordScreen} 
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen 
+        name="Home" 
+        component={HomeScreen} 
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen 
+        name="NotFound" 
+        component={NotFoundScreen} 
+        options={{ title: 'Oops!' }} 
+      />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>

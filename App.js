@@ -1,9 +1,12 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Text, StyleSheet } from 'react-native';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
+
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -13,10 +16,16 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
+      <SafeAreaProvider style={styles}>
+        <Navigation/>
       </SafeAreaProvider>
     );
   }
 }
+
+const styles= StyleSheet.create({
+  root:{
+    flex: 1,
+    backgroundColor: '#F9FBFC',
+  }
+})
