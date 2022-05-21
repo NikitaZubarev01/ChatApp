@@ -11,7 +11,6 @@ const chatRoom3 = chatRoomsData[2];
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
-    <View style={styles.maincontainer}>
       <View style={styles.page}>
         <FlatList 
           data={chatRoomsData}
@@ -19,7 +18,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           showsVerticalScrollIndicator={false}
         />
       </View>
-    </View>
   );
 }
 
