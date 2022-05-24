@@ -8,25 +8,42 @@ import {
     Image, 
     StyleSheet, 
     useWindowDimensions, 
-    ScrollView 
+    ScrollView,
+    Alert,
+    TextInput, 
 } from 'react-native';
 import Logo from '../../../assets/images/Logo_1.png';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
+import { Auth } from 'aws-amplify';
+import { useForm, Controller } from 'react-hook-form';
 
 const SignInScreen = () => {
-    const[username, setUsername] = useState('');
-    const[password, setPassword] = useState('');
+    const[loading, setLoading] = useState(false);
 
     const {height} = useWindowDimensions();
     
     const navigation = useNavigation();
+
+    const {control, handleSubmit, formState: {errors},} = useForm();
+
     
-    const onSingInPressed = () => {
-        //console.warn("Sing in");
-        // Validate user
-        
+    const onSingInPressed = (data) => {
+       {/* if (loading) {
+            return;
+        }
+
+        setLoading(true);
+
+        try{
+        const response = await Auth.singIn(data.username, data.password);
+        console.log(response);
+        } catch(e) {
+            Alert.alert('Oops', e.message);
+        }
+        setLoading(false);
+    */}
         navigation.navigate('Home');
     }
 
@@ -51,21 +68,26 @@ const SignInScreen = () => {
               resizeMode="contain"
               />
 
-            <CustomInput 
+            <CustomInput
+              name="username" 
               placeholder="Username" 
-              value={username} 
-              setValue={setUsername}
-              />
+              control={control}
+              rules={{
+                  required: 'Username is required', 
+                  minLength:{value:4, message:'Username should be minimum 4 characters'},
+                  maxLength:{value:12, message:'Username should be max 12 characters'}
+                }}
+            />
             <CustomInput 
-              placeholder="Password" 
-              value={password} 
-              setValue={setPassword}
+              name="password"
+              placeholder="Password"
               secureTextEntry
-              />
-
+              control={control}
+              rules={{required: 'Password is required', minLength:{value:8, message:'Password should be minimum 8 characters '}}}
+            /> 
             <CustomButton
-                text="Sing in"
-                onPress={onSingInPressed}
+                text={loading ? "Loading..." : "Sing in"}
+                onPress={handleSubmit(onSingInPressed)}
             />
             <CustomButton
                 text="Forgot password?"

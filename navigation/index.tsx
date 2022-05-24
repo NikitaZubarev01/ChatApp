@@ -38,6 +38,31 @@ function RootNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
       <Stack.Screen 
+        name="SignIn" 
+        component={SignInScreen}
+        options={{ headerShown:false}} 
+      />
+      <Stack.Screen 
+        name="SignUp" 
+        component={SignUpScreen}
+        options={{ headerShown:false}} 
+      />
+      <Stack.Screen 
+        name="ComfirmEmail" 
+        component={ComfirmEmailScreen}
+        options={{ headerShown:false}}  
+      />
+      <Stack.Screen 
+        name="ForgotPassword" 
+        component={ForgotPasswordScreen}
+        options={{ headerShown:false}}  
+      />
+      <Stack.Screen 
+        name="NewPassword" 
+        component={NewPasswordScreen} 
+        options={{ headerShown:false}} 
+      />
+      <Stack.Screen 
         name="Home" 
         component={ HomeScreen }
         options={{ 
@@ -50,26 +75,6 @@ function RootNavigator() {
           headerTitle: ChatRoomHeader, 
           headerBackTitleVisible: false,
          }}
-      />
-      <Stack.Screen 
-        name="SignIn" 
-        component={SignInScreen}  
-      />
-      <Stack.Screen 
-        name="SignUp" 
-        component={SignUpScreen} 
-      />
-      <Stack.Screen 
-        name="ComfirmEmail" 
-        component={ComfirmEmailScreen} 
-      />
-      <Stack.Screen 
-        name="ForgotPassword" 
-        component={ForgotPasswordScreen} 
-      />
-      <Stack.Screen 
-        name="NewPassword" 
-        component={NewPasswordScreen} 
       />
       <Stack.Screen 
         name="NotFound" 

@@ -2,17 +2,17 @@ import React, {useState} from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Platform, StatusBar, Text, View, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useForm } from 'react-hook-form';
 
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 
 const NewPasswordScreen = () => {
-    const[code, setCode] = useState('');
-    const[newpassword, setNewPassword] = useState('');
+    const {control, handleSubmit} = useForm();
 
     const navigation = useNavigation();
     
-    const onSubmitPressed = () => {
+    const onSubmitPressed = (data) => {
         console.warn("onSendPressed");
 
         navigation.navigate('Home')
@@ -34,19 +34,27 @@ const NewPasswordScreen = () => {
             <Text style={styles.title}>Reset your password</Text>
 
             <CustomInput 
+              name="code"
+              control={control}
               placeholder="Code" 
-              value={code} 
-              setValue={setCode}
+              rules={{
+                  required:'Code is required'
+              }}
             />
             <CustomInput 
-              placeholder="Enter your new password" 
-              value={newpassword} 
-              setValue={setNewPassword}
+              name="password"
+              control={control}
+              secureTextEntry
+              placeholder="Enter your new password"
+              rules={{
+                required: 'Password is required', 
+                minLength:{value:8, message:'Password should be minimum 8 characters '}
+            }}
             />
 
             <CustomButton
                 text="Submit"
-                onPress={onSubmitPressed}
+                onPress={handleSubmit(onSubmitPressed)}
             />
             <CustomButton
                 text="Resend code"

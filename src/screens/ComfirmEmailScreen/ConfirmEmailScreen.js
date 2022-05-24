@@ -2,16 +2,17 @@ import React, {useState} from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Platform, StatusBar, Text, View, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useForm } from 'react-hook-form';
 
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 
 const ConfirmEmailScreen = () => {
-    const[code, setCode] = useState('');
+    const {control, handleSubmit} = useForm();
 
     const navigation = useNavigation();
     
-    const onConfirmPressed = () => {
+    const onConfirmPressed = (data) => {
         console.warn("onConfirmPressed");
 
         navigation.navigate('Home');
@@ -37,14 +38,17 @@ const ConfirmEmailScreen = () => {
             <Text style={styles.title}>Confirm your email</Text>
 
             <CustomInput 
+              name="code"
+              control={control}
               placeholder="Enter your confimation code" 
-              value={code} 
-              setValue={setCode}
+              rules={{
+                  required:'Confirmation code is required'
+              }}
             />
 
             <CustomButton
                 text="Confirm"
-                onPress={onConfirmPressed}
+                onPress={handleSubmit(onConfirmPressed)}
             />
             <CustomButton
                 text="Resend code"
