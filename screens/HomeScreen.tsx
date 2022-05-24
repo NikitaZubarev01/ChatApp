@@ -11,13 +11,13 @@ const chatRoom3 = chatRoomsData[2];
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
-      <View style={styles.page}>
-        <FlatList 
-          data={chatRoomsData}
-          renderItem={({ item }) => <ChatRoomItem chatRoom={item}/> }
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
+    <View style={styles.page}>
+      <FlatList 
+        data={chatRoomsData}
+        renderItem={({ item }) => <ChatRoomItem chatRoom={item}/> }
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
   );
 }
 

@@ -1,17 +1,11 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Text, StyleSheet, Platform } from 'react-native';
+import { StyleSheet, } from 'react-native';
 import { Amplify } from 'aws-amplify';
 import awsconfig from './src/aws-exports';
 
-
 import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
-import TabOneScreen from './screens/HomeScreen';
-import ChatRoomScreen from './screens/ChatRoomScreen';
-import MessageInput from './components/MessageInput';
 
 Amplify.configure(awsconfig);
 
@@ -19,7 +13,6 @@ function App() {
   //Auth.singOut();
 
   const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
 
   if (!isLoadingComplete) {
     return null;

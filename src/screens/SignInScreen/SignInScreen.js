@@ -19,6 +19,9 @@ import { useNavigation } from '@react-navigation/native';
 import { Auth } from 'aws-amplify';
 import { useForm, Controller } from 'react-hook-form';
 
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+
 const SignInScreen = () => {
     const[loading, setLoading] = useState(false);
 
@@ -29,22 +32,19 @@ const SignInScreen = () => {
     const {control, handleSubmit, formState: {errors},} = useForm();
 
     
-    const onSingInPressed = (data) => {
-       {/* if (loading) {
+    const onSingInPressed = async data => {
+        if (loading) {
             return;
         }
 
         setLoading(true);
-
         try{
-        const response = await Auth.singIn(data.username, data.password);
-        console.log(response);
+            const response = await Auth.singIn(data.username, data.password);
+            console.log(response);
         } catch(e) {
             Alert.alert('Oops', e.message);
         }
         setLoading(false);
-    */}
-        navigation.navigate('Home');
     }
 
     const onForgotPasswordPress= () => {
@@ -69,24 +69,26 @@ const SignInScreen = () => {
               />
 
             <CustomInput
-              name="username" 
-              placeholder="Username" 
+              name="username"
+              placeholder="Username"
               control={control}
-              rules={{
-                  required: 'Username is required', 
-                  minLength:{value:4, message:'Username should be minimum 4 characters'},
-                  maxLength:{value:12, message:'Username should be max 12 characters'}
-                }}
-            />
+              rules={{required: 'Username is required'}}
+             />
             <CustomInput 
               name="password"
               placeholder="Password"
               secureTextEntry
               control={control}
-              rules={{required: 'Password is required', minLength:{value:8, message:'Password should be minimum 8 characters '}}}
+              rules={{
+                  required: 'Password is required', 
+                  minLength:{
+                    value:8, 
+                    message:'Password should be minimum 8 characters '
+                  }
+                }}
             /> 
             <CustomButton
-                text={loading ? "Loading..." : "Sing in"}
+                text={loading ? 'Loading...' : 'Sing in' }
                 onPress={handleSubmit(onSingInPressed)}
             />
             <CustomButton

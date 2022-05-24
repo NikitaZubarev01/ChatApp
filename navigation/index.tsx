@@ -1,9 +1,19 @@
-import { Feather } from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as React from 'react';
-import { ColorSchemeName, Pressable, Text, View, Image, useWindowDimensions, StyleSheet } from 'react-native';
+import { 
+  ColorSchemeName, 
+  Pressable, 
+  Text, 
+  View, 
+  Image, 
+  useWindowDimensions, 
+  StyleSheet, 
+  ActivityIndicator, 
+} from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import { Auth, Hub } from 'aws-amplify';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
@@ -35,52 +45,80 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const [user,setUser] = useState(undefined);
+  
+  const checkUser = async () => {
+    const authUser = await Auth.currentAuthenticatedUser({bypassCache: true});
+    setUser(authUser);
+  }
+  
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  // if (user == undefined){
+  //   return(
+  //     <View style={{flex:1, justifyContent:'center', alignItems: 'center'}}>
+  //       <ActivityIndicator />
+  //     </View>
+  //   )
+  // }
+
+
   return (
     <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-      <Stack.Screen 
-        name="SignIn" 
-        component={SignInScreen}
-        options={{ headerShown:false}} 
-      />
-      <Stack.Screen 
-        name="SignUp" 
-        component={SignUpScreen}
-        options={{ headerShown:false}} 
-      />
-      <Stack.Screen 
-        name="ComfirmEmail" 
-        component={ComfirmEmailScreen}
-        options={{ headerShown:false}}  
-      />
-      <Stack.Screen 
-        name="ForgotPassword" 
-        component={ForgotPasswordScreen}
-        options={{ headerShown:false}}  
-      />
-      <Stack.Screen 
-        name="NewPassword" 
-        component={NewPasswordScreen} 
-        options={{ headerShown:false}} 
-      />
-      <Stack.Screen 
+      {user ? (
+        <>
+        <Stack.Screen 
         name="Home" 
         component={ HomeScreen }
         options={{ 
           headerTitle: props => <HomeHeader/>}}
-      />
-      <Stack.Screen 
-        name="ChatRoom" 
-        component={ChatRoomScreen}
-        options={{ 
-          headerTitle: ChatRoomHeader, 
-          headerBackTitleVisible: false,
-         }}
-      />
-      <Stack.Screen 
-        name="NotFound" 
-        component={NotFoundScreen} 
-        options={{ title: 'Oops!' }} 
-      />
+        />
+        <Stack.Screen 
+          name="ChatRoom" 
+          component={ChatRoomScreen}
+          options={{ 
+            headerTitle: ChatRoomHeader, 
+            headerBackTitleVisible: false,
+          }}
+        />
+      </>
+      ) : (
+        <>
+        <Stack.Screen 
+          name="SignIn" 
+          component={SignInScreen}
+          options={{ headerShown:false}} 
+        />
+        <Stack.Screen 
+          name="SignUp" 
+          component={SignUpScreen}
+          options={{ headerShown:false}} 
+        />
+        <Stack.Screen 
+          name="ComfirmEmail" 
+          component={ComfirmEmailScreen}
+          options={{ headerShown:false}}  
+        />
+        <Stack.Screen 
+          name="ForgotPassword" 
+          component={ForgotPasswordScreen}
+          options={{ headerShown:false}}  
+        />
+        <Stack.Screen 
+          name="NewPassword" 
+          component={NewPasswordScreen} 
+          options={{ headerShown:false}} 
+        />
+        </>
+        )}
+        
+        <Stack.Screen 
+          name="NotFound" 
+          component={NotFoundScreen} 
+          options={{ title: 'Oops!' }} 
+        />
     </Stack.Navigator>
   );
 }
@@ -91,20 +129,20 @@ const HomeHeader = (props) => {
 
   return(
     <View 
-    style={{
-      flexDirection:'row', 
-      justifyContent:'space-between',
-      width, 
-      right: 5,
-      alignItems:'center'}}>
+      style={{
+        flexDirection:'row', 
+        justifyContent:'space-between',
+        width, 
+        right: 5,
+        alignItems:'center'}}>
       <Image 
         source={{uri: 'https://sun9-23.userapi.com/s/v1/ig2/vNrqVq2PwEsuhrMbODZn-RH5LbmG226bNumzeXSwzNPoRmBH9WtZ9u67kJfB6nF-AsrgcZwXC8WUhGUDFe9VDhbi.jpg?size=1437x2160&quality=96&type=album' }}
         style={{width:35,height:35,borderRadius:30 }}
       />
       <Text style={{flex: 1, textAlign:'center', marginLeft: 40,fontWeight:'bold'}}>Home</Text>
       <View style={{flexDirection:'row', paddingEnd:15}}>
-      <Feather name="camera" size={24} color="black" style={{marginHorizontal: 10,}} />
-      <Feather name="edit-2" size={24} color="black" style={{marginHorizontal: 10,}} />
+        <Feather name="camera" size={24} color="black" style={{marginHorizontal: 10,}} />
+        <Feather name="edit-2" size={24} color="black" style={{marginHorizontal: 10,}} />
       </View>
     </View>
   )
@@ -115,21 +153,21 @@ const ChatRoomHeader = (props) => {
 
   return(
     <View 
-    style={{
-      flexDirection:'row', 
-      justifyContent:'space-between',
-      width : width - 30,
-      right:30,
-      padding: 10,
-      alignItems:'center'}}>
+      style={{
+        flexDirection:'row', 
+        justifyContent:'space-between',
+        width : width - 30,
+        right:30,
+        padding: 10,
+        alignItems:'center'}}>
       <Image 
         source={{uri: 'https://sun9-23.userapi.com/s/v1/ig2/vNrqVq2PwEsuhrMbODZn-RH5LbmG226bNumzeXSwzNPoRmBH9WtZ9u67kJfB6nF-AsrgcZwXC8WUhGUDFe9VDhbi.jpg?size=1437x2160&quality=96&type=album' }}
         style={{width:35,height:35,borderRadius:30 }}
       />
       <Text style={{flex: 1, marginLeft: 10,fontWeight:'bold'}}>{props.children}</Text>
       <View style={{flexDirection:'row', paddingEnd:10}}>
-      <Feather name="camera" size={24} color="black" style={{marginHorizontal: 10,}} />
-      <Feather name="edit-2" size={24} color="black" style={{marginHorizontal: 10,}} />
+        <Feather name="camera" size={24} color="black" style={{marginHorizontal: 10,}} />
+        <Feather name="edit-2" size={24} color="black" style={{marginHorizontal: 10,}} />
       </View>
     </View>
   )
