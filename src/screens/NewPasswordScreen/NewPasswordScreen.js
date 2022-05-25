@@ -1,15 +1,21 @@
-import React, {useState} from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React from 'react';
 import { Platform, StatusBar, Text, View, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import { Auth } from 'aws-amplify';
+//import { useRoute } from '@react-navigation/native';
+
 
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 
 const NewPasswordScreen = () => {
-  const {control, handleSubmit} = useForm();
+  // const route = useRoute();
+   const {control, handleSubmit} = useForm();
+  //   defaultValues: {username: route?.params?.username},
+  // });
+
+  //const username = watch('username');
 
   const navigation = useNavigation();
     
@@ -40,7 +46,7 @@ const NewPasswordScreen = () => {
             control={control}
             placeholder="Username" 
             rules={{
-              required:'Username is required'
+              required:'Code is required'
             }}
           />
           <CustomInput 

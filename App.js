@@ -2,6 +2,8 @@ import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StyleSheet, } from 'react-native';
 import { Amplify } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
+import { withAutenticator } from 'aws-amplify-react-native';
 import awsconfig from './src/aws-exports';
 
 import useCachedResources from './hooks/useCachedResources';
@@ -10,8 +12,6 @@ import Navigation from './navigation';
 Amplify.configure(awsconfig);
 
 function App() {
-  //Auth.singOut();
-
   const isLoadingComplete = useCachedResources();
 
   if (!isLoadingComplete) {

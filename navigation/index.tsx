@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Auth, Hub } from 'aws-amplify';
+import { useNavigation } from '@react-navigation/native';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
@@ -45,25 +46,37 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  const [user,setUser] = useState(undefined);
+   const [user,setUser] = useState<undefined | null>(undefined);
   
   const checkUser = async () => {
-    const authUser = await Auth.currentAuthenticatedUser({bypassCache: true});
-    setUser(authUser);
-  }
-  
+     try {
+      const authUser = await Auth.currentAuthenticatedUser({bypassCache: true});
+      setUser(authUser);
+     } catch (e) {
+       setUser(null);
+     }
+  };
   useEffect(() => {
     checkUser();
   }, []);
 
-  // if (user == undefined){
-  //   return(
-  //     <View style={{flex:1, justifyContent:'center', alignItems: 'center'}}>
-  //       <ActivityIndicator />
-  //     </View>
-  //   )
-  // }
+  useEffect(() => {
+    const listener = (data) => {
+      if (data.payload.event === 'signIn' || data.payload.event === 'signOut') {
+        checkUser();
+      }
+    }
+    Hub.listen('auth', listener);
+    return () => Hub.remove('auth',listener);
+  }, [] )
 
+  if (user === undefined){
+    return(
+      <View style={{flex:1, justifyContent:'center', alignItems: 'center'}}>
+        <ActivityIndicator />
+      </View>
+    )
+  }
 
   return (
     <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
@@ -113,12 +126,6 @@ function RootNavigator() {
         />
         </>
         )}
-        
-        <Stack.Screen 
-          name="NotFound" 
-          component={NotFoundScreen} 
-          options={{ title: 'Oops!' }} 
-        />
     </Stack.Navigator>
   );
 }

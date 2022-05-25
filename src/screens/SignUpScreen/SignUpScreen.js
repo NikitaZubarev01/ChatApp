@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React from 'react';
 import { 
   Platform, 
   StatusBar, 
@@ -20,6 +19,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 
 const SignUpScreen = () => {
   const {control, handleSubmit, watch} = useForm();
+
   const pwd = watch('password');
   const navigation = useNavigation();
 

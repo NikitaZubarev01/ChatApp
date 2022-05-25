@@ -19,27 +19,24 @@ import { useNavigation } from '@react-navigation/native';
 import { Auth } from 'aws-amplify';
 import { useForm, Controller } from 'react-hook-form';
 
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-
 const SignInScreen = () => {
-    const[loading, setLoading] = useState(false);
+    const navigation = useNavigation();
 
     const {height} = useWindowDimensions();
-    
-    const navigation = useNavigation();
+
+    const[loading, setLoading] = useState(false);
 
     const {control, handleSubmit, formState: {errors},} = useForm();
 
     
-    const onSingInPressed = async data => {
+    const onSingInPressed = async (data) => {
         if (loading) {
             return;
         }
 
         setLoading(true);
         try{
-            const response = await Auth.singIn(data.username, data.password);
+            const response = await Auth.signIn(data.username, data.password);
             console.log(response);
         } catch(e) {
             Alert.alert('Oops', e.message);
@@ -48,14 +45,10 @@ const SignInScreen = () => {
     }
 
     const onForgotPasswordPress= () => {
-        //console.warn("onForgotPasswordPress");
-
         navigation.navigate('ForgotPassword');
     }
 
     const onSingUpPress = () => {
-        console.warn("onSingUpPress");
-
         navigation.navigate('SignUp');
     }
 

@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React from 'react';
 import { Platform, StatusBar, Text, View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
@@ -13,7 +12,7 @@ import CustomButton from '../../components/CustomButton';
 const ConfirmEmailScreen = () => {
     const route = useRoute();
     const {control, handleSubmit, watch} = useForm({
-        defaultvalues: {username: route?.params?.username},
+        defaultValues: {username: route?.params?.username},
     });
 
     const username = watch('username');
@@ -27,21 +26,15 @@ const ConfirmEmailScreen = () => {
         } catch (e) {
             Alert.alert("Oops", e.message);
         }
-        
-        // console.warn("onConfirmPressed");
     }
 
-    const onForgotPasswordPress= async (data) => {
+    const onResendPress = async (data) => {
         try{
             await Auth.resendSignUp(data.username);
             Alert.alert('Success','Code was resent to your email');
         } catch (e) {
             Alert.alert("Oops", e.message);
         }
-    }
-
-    const onResendPress = () => {
-        console.warn("onResendPress");
     }
 
     const onSingInPress = () => {
